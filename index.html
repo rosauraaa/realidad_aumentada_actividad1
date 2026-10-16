@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Juego de Realidad Virtual: Postres Anime</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+      #hud {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 999;
+        font-family: Arial, sans-serif;
+        color: white;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <!--hud de puntos y tiempo, contenedorew vacíos-->
+    <div id="hud">
+      Puntos: <span id="score">0</span><br>
+      Tiempo: <span id="timer">60</span>s
+    </div>
+
+    <a-scene mindar-image="imageTargetSrc: marker.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <a-asset-item id="pastel" src="assets/pastel.glb"></a-asset-item>
+        <a-asset-item id="quemado" src="assets/quemado.glb"></a-asset-item>
+        <a-asset-item id="sundae" src="assets/sundae.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="objects: .clickable"></a-camera>
+
+      <!--marcador-->
+      <a-entity mindar-image-target="targetIndex: 0" id="tarjeta">
+        <!--todos con la propiedad clickeable-->
+        <a-gltf-model class="clickable" src="#pastel" position="-0.5 0 0" scale="0.3 0.3 0.3" id="btn-pastel"></a-gltf-model>
+        
+        <a-gltf-model class="clickable" src="#sundae" position="0.5 0 0" scale="0.3 0.3 0.3" id="btn-sundae"></a-gltf-model>
+
+        <a-gltf-model class="clickable" src="#quemado" position="0 -0.5 0" scale="0.3 0.3 0.3" id="btn-quemado"></a-gltf-model>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      let score = 0;
+      let timeLeft = 60;
+      let gameActive = true;
+
+      const scoreEl = document.getElementById("score");
+      const timerEl = document.getElementById("timer");
+
+      //timer de 60 segundos el tiempo que va a tener 
+      const countdown = setInterval(() => {
+        if (!gameActive) return;
+        timeLeft--;
+        timerEl.textContent = timeLeft; //muestra cuanto tiempo le queda 
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          gameActive = false;
+          alert("Se acabó el tiempo! Tu puntaje es de: " + score);
+        }
+      }, 1000);
+
+      // lógica de clics en los modelos
+      document.querySelector("#btn-pastel").addEventListener("click", () => {
+        if (!gameActive) return;
+        score += 10;
+        scoreEl.textContent = score;
+      });
+
+      document.querySelector("#btn-sundae").addEventListener("click", () => {
+        if (!gameActive) return;
+        score += 15;
+        scoreEl.textContent = score;
+      });
+
+      document.querySelector("#btn-quemado").addEventListener("click", () => {
+        if (!gameActive) return;
+        score -= 10; //quita puntos si es la galleta 
+        scoreEl.textContent = score;
+      });
+    </script>
+  </body>
+</html>
