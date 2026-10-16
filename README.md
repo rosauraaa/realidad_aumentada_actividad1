@@ -1,3 +1,4 @@
+
 # Actividad 1: Juego de RA con Marcador QR 
 
 ## Descripción
@@ -12,3 +13,5 @@ Juego de realidad aumentada móvil activado por código QR personalizado. El usu
 - Strawberry Shortcake by Jarlan Perez [CC-BY] via Poly Pizza
 - Sundae by Kenney
 - Sandwich Cookie by Poly by Google [CC-BY] via Poly Pizza 
+# realidad_aumentada_actividad1
+
